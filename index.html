@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpage of a Basic Code Editor</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <label><i class="fa-brands fa-html5"></i> HTML</label>
+            <textarea id="html-code" onkeyup="run()"></textarea>
+
+            <label><i class="fa-brands fa-css3-alt"></i>CSS</label>
+            <textarea id="css-code" onkeyup="run()"></textarea>
+
+            <label><i class="fa-brands fa-square-js"></i>JavaScript</label>
+            <textarea id="js-code" onkeyup="run()" ></textarea>
+        </div>
+        <div class="right">
+            <div><label><i class="fa-solid fa-play"></i> Output</label></div>
+            <div class="code-editor-toolbar">
+                <button id="copy">Copy</button>
+    <button id="save">Save</button>
+    <button id="lockUnlock">Lock/Unlock</button>
+            </div>
+            
+            <iframe id="output"></iframe>
+        </div>
+
+        
+    </div>
+
+    <script>
+
+      function run(){
+        let htmlCode = document.getElementById("html-code").value;
+        let cssCode = document.getElementById("css-code").value;
+        let jsCode = document.getElementById("js-code").value;
+        let output = document.getElementById("output");
+
+        output.contentDocument.body.innerHTML = htmlCode + "<style>"+ cssCode +"</style>";
+        output.contentWindow.eval(jsCode);
+      } 
+
+      let output = document.getElementById("output");
+      document.getElementById("copy").addEventListener("click", function() {
+            output.focus();
+            output.execCommand("selectAll");
+            document.execCommand("copy");
+        });
+
+        document.getElementById("save").addEventListener("click", function() {
+            alert("Saving code...");
+        });
+
+        var isLocked = false;
+        var lockUnlockButton = document.getElementById("lockUnlock");
+
+        lockUnlockButton.addEventListener("click", function() {
+            isLocked = !isLocked;
+            output.setOption("readOnly", isLocked);
+            lockUnlockButton.innerText = isLocked ? "Unlock" : "Lock";
+        });
+        
+
+    </script>
+    
+</body>
